@@ -43,16 +43,16 @@ dns_client = DnsManagementClient(
 
 while True:
     try:
-        print(f'[{time.strftime("%H:%M:%S")}]')
-        print(f'Checking {RECORD_SET} record set...')
+        sys.stderr.write(f'[{time.strftime("%H:%M:%S")}]\n')
+        sys.stderr.write(f'Checking {RECORD_SET} record set...\n')
         public_ip = ip
-        print(f'Public IP address: {public_ip}')
+        sys.stderr.write(f'Public IP address: {public_ip}\n')
         host = ("a." if RECORD_SET == "*" else ("" if RECORD_SET == "@" else RECORD_SET + ".")) + DOMAIN
         current_ip = gethostbyname(host) 
-        print(f'Current IP address: {current_ip}')
+        sys.stderr.write(f'Current IP address: {current_ip}\n')
 
         if public_ip == current_ip:
-            print("No change")
+            sys.stderr.write("No change\n")
         else:
             record_set = dns_client.record_sets.create_or_update(
                 RESOURCE_GROUP,
@@ -68,8 +68,8 @@ while True:
                     ]
                 }
             )
-            print("Record changed")
-    except Exception as c:
-        logging.error(c)
+            sys.stderr.write("Record changed\n")
+    except Exception as ex:
+        print(ex, file=sys.stderr)
     
     time.sleep(INTERVAL)
