@@ -3,7 +3,6 @@ from azure.mgmt.dns import DnsManagementClient
 from requests import get
 from socket import gethostbyname
 import time
-import logging
 import os
 import sys
 
@@ -28,7 +27,7 @@ DOMAIN = definevar('DOMAIN', str)
 interval = definevar('INTERVAL', int)
 INTERVAL = 300 if interval is None else interval
 
-ip = get('https://api.ipify.org').text
+ip = get('https://api.ipify.org', params = {"time": round(time.time())}).text
 
 credentials = ServicePrincipalCredentials(
     client_id = APP_ID,
