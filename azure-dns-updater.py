@@ -43,32 +43,36 @@ dns_client = DnsManagementClient(
 while True:
     try:
         sys.stderr.write(f'[{time.strftime("%H:%M:%S")}]\n')
-        sys.stderr.write(f'Checking {RECORD_SET} record set...\n')
         public_ip = ip
-        sys.stderr.write(f'Public IP address: {public_ip}\n')
-        host = ("a." if RECORD_SET == "*" else ("" if RECORD_SET == "@" else RECORD_SET + ".")) + DOMAIN
-        current_ip = gethostbyname(host) 
-        sys.stderr.write(f'Current IP address: {current_ip}\n')
+        sys.stderr.write(f'Public IP address: {public_ip}.\n')
 
-        if public_ip == current_ip:
-            sys.stderr.write("No change\n")
-        else:
-            record_set = dns_client.record_sets.create_or_update(
-                RESOURCE_GROUP,
-                DOMAIN,
-                RECORD_SET,
-                'A',
-                {
-                    "ttl": INTERVAL,
-                    "arecords": [
-                        {
-                            "ipv4_address": public_ip
-                        }
-                    ]
-                }
-            )
-            sys.stderr.write("Record changed\n")
+        for record_set in RECORD_SET.split(','):
+            sys.stderr.write(f'Checking {record_set} record set...\n')
+            host = ('a.' if record_set == '*' else ('' if record_set == '@' else record_set + ".")) + DOMAIN
+            current_ip = gethostbyname(host)
+            sys.stderr.write(f'Current IP address for record: {current_ip}.\n')
+
+            if public_ip == current_ip:
+                sys.stderr.write('No change.\n')
+            else:
+                dns_client.record_sets.create_or_update(
+                    RESOURCE_GROUP,
+                    DOMAIN,
+                    record_set,
+                    'A',
+                    {
+                        "ttl": INTERVAL,
+                        "arecords": [
+                            {
+                                "ipv4_address": public_ip
+                            }
+                        ]
+                    }
+                )
+                sys.stderr.write(f'Record {record_set} changed.')
     except Exception as ex:
+        sys.stderr.write(f'ERROR: ')
         print(ex, file=sys.stderr)
-    
+
+    sys.stderr.write('\n\n')
     time.sleep(INTERVAL)
