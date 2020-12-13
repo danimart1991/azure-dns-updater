@@ -25,7 +25,7 @@ RESOURCE_GROUP = definevar('RESOURCE_GROUP', str)
 RECORD_SET = definevar('RECORD_SET', str)
 DOMAIN = definevar('DOMAIN', str)
 interval = definevar('INTERVAL', int)
-INTERVAL = 300 if interval is None else interval
+INTERVAL = 300 if interval is None else int(interval)
 
 ip = get('https://api.ipify.org', params = {"time": round(time.time())}).text
 
