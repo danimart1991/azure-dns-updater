@@ -27,7 +27,11 @@ DOMAIN = definevar('DOMAIN', str)
 interval = definevar('INTERVAL', int)
 INTERVAL = 300 if interval is None else int(interval)
 
-ip = get('https://api.ipify.org', params = {"time": round(time.time())}).text
+headers = {
+    "Cache-Control": "no-cache",
+    "Pragma": "no-cache"
+}
+ip = get('https://api.ipify.org', headers=headers).text
 
 credentials = ServicePrincipalCredentials(
     client_id = APP_ID,
