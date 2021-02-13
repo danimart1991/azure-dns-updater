@@ -6,16 +6,18 @@ import time
 import os
 import sys
 
+
 def definevar(var: str, cast: type) -> str:
     if var in os.environ:
         return os.environ[var]
     else:
         args = sys.argv[1:]
         for arg in args:
-            arg_clean = arg.replace('--','',1).split('=')
+            arg_clean = arg.replace('--', '', 1).split('=')
             if arg_clean[0] == var:
                 return cast(arg_clean[1])
-    return   
+    return
+
 
 TENANT_ID = definevar('TENANT_ID', str)
 APP_ID = definevar('APP_ID', str)
@@ -29,14 +31,15 @@ INTERVAL = 300 if interval is None else int(interval)
 
 headers = {
     "Cache-Control": "no-cache",
-    "Pragma": "no-cache"
+    "Pragma": "no-cache",
+    "Connection": "close"
 }
 ip = get('https://api.ipify.org', headers=headers).text
 
 credentials = ServicePrincipalCredentials(
-    client_id = APP_ID,
-    secret = APP_SECRET,
-    tenant = TENANT_ID
+    client_id=APP_ID,
+    secret=APP_SECRET,
+    tenant=TENANT_ID
 )
 
 dns_client = DnsManagementClient(
@@ -52,7 +55,8 @@ while True:
 
         for record_set in RECORD_SET.split(','):
             sys.stderr.write(f'Checking {record_set} record set...\n')
-            host = ('a.' if record_set == '*' else ('' if record_set == '@' else record_set + ".")) + DOMAIN
+            host = ('a.' if record_set == '*' else ('' if record_set ==
+                                                    '@' else record_set + ".")) + DOMAIN
             current_ip = gethostbyname(host)
             sys.stderr.write(f'Current IP address for record: {current_ip}.\n')
 
