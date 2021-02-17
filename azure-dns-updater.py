@@ -34,7 +34,6 @@ headers = {
     "Pragma": "no-cache",
     "Connection": "close"
 }
-ip = get('https://api.ipify.org', headers=headers).text
 
 credentials = ServicePrincipalCredentials(
     client_id=APP_ID,
@@ -50,7 +49,7 @@ dns_client = DnsManagementClient(
 while True:
     try:
         sys.stderr.write(f'[{time.strftime("%H:%M:%S")}]\n')
-        public_ip = ip
+        public_ip = get('https://api.ipify.org', headers=headers).text
         sys.stderr.write(f'Public IP address: {public_ip}.\n')
 
         for record_set in RECORD_SET.split(','):
