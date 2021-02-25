@@ -15,17 +15,17 @@ Azure Dynamic DNS updater based on Python (Docker Included)
 
 Based on [AzureDynDns](https://github.com/evkapsal/AzureDynDns) by [@evkapsal](https://github.com/evkapsal)
 
-# Requirements
+## Requirements
 
 [Microsoft Azure Portal](https://portal.azure.com/):
 
-- Create an *App Service Domain*.
-- Activate *DNS Zone* for that domain.
-- Create all *DNS Record Sets* you need to be updated (recommend to set the current server `IP` as value).
+- Create an _App Service Domain_.
+- Activate _DNS Zone_ for that domain.
+- Create all _DNS Record Sets_ you need to be updated (recommend to set the current server `IP` as value).
 
 From this page, you could get.
 
-![Azure DNS Zone example](/docs/images/dns-zone.png)
+![Azure DNS Zone example](https://github.com/danimart1991/azure-dns-updater/blob/main/docs/images/dns-zone.png?raw=true)
 
 - SUBSCRIPTION_ID: `38926cdc-fcb2-4e67-bed8-8e619ab2d5a4`.
 - DOMAIN: `foo.com`.
@@ -61,15 +61,15 @@ Annotate these variables too:
 
 Now, you have all the necessary to make que **Azure DNS Updater** works.
 
-# Usage
+## Usage
 
-There are two methods to use **Azure DNS Updater**: *Python* or *Docker*.
+There are two methods to use **Azure DNS Updater**: _Python_ or _Docker_.
 
 Both need the variables previously obtained plus `INTERVAL`, that defines the number of seconds between each check.
 
-`RECORD_SET` variable accepts one *DNS Record* or a list of *DNS Records* separated by comma.
+`RECORD_SET` variable accepts one _DNS Record_ or a list of _DNS Records_ separated by comma.
 
-## Python
+### Python
 
 Download the `azure-dns-updater.py` and load it using this command:
 
@@ -85,10 +85,10 @@ $ python .\azure-dns-updater.py
 \ --INTERVAL=300
 ```
 
-## Docker
+### Docker
 
-``` bash
-$ docker run -d 
+```bash
+$ docker run -d
 \ --name="Azure_DNS_Updater"
 \ --hostname=azure_dns_updater
 \ --restart=always
